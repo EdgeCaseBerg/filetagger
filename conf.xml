@@ -1,0 +1,7 @@
+<config>
+	<database environment="local">
+		<port>27017</port>
+		<host>localhost</host>
+		<name>filetagger</name>
+	</database>
+</config>
