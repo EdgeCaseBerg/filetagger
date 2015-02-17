@@ -19,19 +19,16 @@ class DocumentDataStorage(xmlConfFilePath: String, environment: String = "local"
 	def addTagToFile(fileName: String, tag: String) : Boolean = {
 		var resultOfOperation : Boolean = false
 
-		//This foreach method on the findOne seems wrong, i must be missing something 
-		//with options
 		collection.findOne(MongoDBObject("name" -> fileName)).foreach { c =>
-			c.getAs[List[String]]("tags").foreach { tags => 
-					if (!tags.contains(tag)) {
-						val tagList = tags ++ tag
-						val update = $set("tags" -> tagList)
-						val result = collection.update(c, update, upsert=true)
-						assert(result.getN == 1)
-						resultOfOperation = true
-					}		
-				}
-			}
+			var tags = c.as[List[String]]("tags")
+			if (!tags.contains(tag)) {
+				val tagList = tags ++ tag
+				val update = $set("tags" -> tagList)
+				val result = collection.update(c, update, upsert=true)
+				assert(result.getN == 1)
+				resultOfOperation = true
+			}			
+		}
 		return resultOfOperation  
 	}
 
