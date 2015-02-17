@@ -19,18 +19,20 @@ class DocumentDataStorage(xmlConfFilePath: String, environment: String = "local"
 	def addTagToFile(fileName: String, tag: String) : Boolean = {
 		var resultOfOperation : Boolean = false
 
-		collection.findOne(MongoDBObject("name" -> fileName)).foreach { c =>
-			var tags = c.as[List[String]]("tags")
+		collection.findOne(MongoDBObject("name" -> fileName)).foreach { row =>
+			var tags = row.as[List[String]]("tags")
 			if (!tags.contains(tag)) {
 				val tagList = tags ++ tag
 				val update = $set("tags" -> tagList)
-				val result = collection.update(c, update, upsert=true)
+				val result = collection.update(row, update, upsert=true)
 				assert(result.getN == 1)
 				resultOfOperation = true
 			}			
 		}
 		return resultOfOperation  
 	}
+
+	
 
 
 	
