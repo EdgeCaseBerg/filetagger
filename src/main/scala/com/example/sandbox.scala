@@ -7,9 +7,9 @@ class DocumentDataStorage(xmlConfFilePath: String, environment: String = "local"
 	val datasource = (conf \\ "database").filter(dNode => dNode.attribute("environment").exists(env => env.text == environment))
 	assert(datasource.length == 1)
 
-	val mongoClient = MongoClient( (datasource \ "host").text , (datasource \ "port").text.toInt)
-	val db = mongoClient("filetagger")
-	val collection = db("filetagger")
+	lazy val mongoClient = MongoClient( (datasource \ "host").text , (datasource \ "port").text.toInt)
+	lazy val db = mongoClient("filetagger")
+	lazy val collection = db("filetagger")
 	
 
 	def addFile(fileName: String) {
