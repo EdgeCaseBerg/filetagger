@@ -16,7 +16,7 @@ class SlideShowForFolder(rootFolderPath: String, timeToShowImage: Long = 2L) {
 	val mimetypesFileTypeMap = new MimetypesFileTypeMap()
 	mimetypesFileTypeMap.addMimeTypes("image png tif jpg jpeg bmp")
 
-	var curList = Set.empty[File]
+	var curList = List.empty[File]
 	var iter = curList.iterator : Iterator[File] //iter for curList
 	var curFile = null : File
 	
@@ -28,7 +28,7 @@ class SlideShowForFolder(rootFolderPath: String, timeToShowImage: Long = 2L) {
 		val f = new File(rootFolderPath)
 		if (f.isDirectory) {
 			val allFiles : List[File] = f.listFiles.toList
-			curList ++= allFiles.filter(file => isImage(file))
+			curList = scala.util.Random.shuffle(allFiles.filter(file => isImage(file)))
 			iter = curList.iterator
 			return true
 		}
