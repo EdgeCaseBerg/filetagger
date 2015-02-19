@@ -16,9 +16,9 @@ class SlideShowForFolder(rootFolderPath: String, timeToShowImage: Long = 2L) {
 	val mimetypesFileTypeMap = new MimetypesFileTypeMap()
 	mimetypesFileTypeMap.addMimeTypes("image png tif jpg jpeg bmp")
 
-	var curList = List.empty[File]
-	var iter = curList.iterator : Iterator[File] //iter for curList
-	var curFile = null : File
+	var curList = List.empty[String]
+	var iter = curList.iterator : Iterator[String] //iter for curList
+	var curFile = null : String
 	
 	private def isImage(possibleImg: File) : Boolean = { 
 		return mimetypesFileTypeMap.getContentType( possibleImg).substring(0,5).equalsIgnoreCase("image")
@@ -28,11 +28,17 @@ class SlideShowForFolder(rootFolderPath: String, timeToShowImage: Long = 2L) {
 		val f = new File(rootFolderPath)
 		if (f.isDirectory) {
 			val allFiles : List[File] = f.listFiles.toList
-			curList = scala.util.Random.shuffle(allFiles.filter(file => isImage(file)))
+			curList = scala.util.Random.shuffle(allFiles.filter(file => isImage(file)).map(f => f.getAbsolutePath))
 			iter = curList.iterator
 			return true
 		}
 		return false;
+	}
+
+	/* Pull out a bunch of files via tags then use this! :D */
+	def overrideCurList(newList: List[String]) : Unit = {
+		curList = scala.util.Random.shuffle(newList)
+		iter = curList.iterator
 	}
 
 	def showFile(f : File) : Unit = {
@@ -43,7 +49,7 @@ class SlideShowForFolder(rootFolderPath: String, timeToShowImage: Long = 2L) {
 		showFile(next)
 	}
 
-	def next : File = {
+	def next : String = {
 		if (iter.hasNext) {
 			curFile = iter.next
 		} else {
