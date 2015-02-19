@@ -72,11 +72,14 @@ class SlideShowForFolder(rootFolderPath: String, timeToShowImage: Long = 2L) {
 	}
 
 	def slideShowForNSeconds(timeToRunInSeconds: Long) : Unit = {
-		init
-		val now = java.util.Calendar.getInstance().getTime.getTime
-		val later = now + (timeToRunInSeconds*1000)
-		while(java.util.Calendar.getInstance().getTime.getTime < later) {
-			showNext
+		if (init) {
+			val now = java.util.Calendar.getInstance().getTime.getTime
+			val later = now + (timeToRunInSeconds*1000)
+			while(java.util.Calendar.getInstance().getTime.getTime < later) {
+				showNext
+			}
+		} else {
+			println("Ahhhh!")
 		}
 	}
 }
