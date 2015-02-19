@@ -1,6 +1,7 @@
 package com.example
 
 import com.mongodb.casbah.Imports._
+import scala.collection.mutable.ListBuffer
 
 class DocumentDataStorage(xmlConfFilePath: String, environment: String = "local") {
 	val conf = scala.xml.XML.loadFile(xmlConfFilePath)
@@ -32,9 +33,12 @@ class DocumentDataStorage(xmlConfFilePath: String, environment: String = "local"
 		return resultOfOperation  
 	}
 
-	
-
-
-	
+	def getFilesByTags(tag: String) : List[String] = {
+		val listBuffer = ListBuffer.empty[String] 
+		collection.find(MongoDBObject("tags" -> tag)).foreach { row => 
+			listBuffer += row.as[String]("name")
+		}
+		return listBuffer.toList
+	}
 }
 
