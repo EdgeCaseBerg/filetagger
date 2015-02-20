@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 import scala.collection.JavaConversions._
 
 
-class SlideShowDoer(rootFolderPath: String, timeToShowImage: Long = 2L) {
+class SlideShowDoer(rootFolderPath: String, timeToShowImage: Long = 2L, shellProg: String = "eom") {
 	val mimetypesFileTypeMap = new MimetypesFileTypeMap()
 	mimetypesFileTypeMap.addMimeTypes("image png tif jpg jpeg bmp")
 
@@ -67,7 +67,7 @@ class SlideShowDoer(rootFolderPath: String, timeToShowImage: Long = 2L) {
 		val pool = Executors.newSingleThreadScheduledExecutor()
 		val toRun = new Callable[Unit]() {
 				override def call() {
-					s"eom $s" !	;
+					s"$shellProg $s" !	;
 				}
 			}
 		val tasks = List(toRun)
