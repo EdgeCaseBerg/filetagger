@@ -21,7 +21,7 @@ class SlideShowDoer(rootFolderPath: String, timeToShowImage: Long = 2L, shellPro
 	var curFile = null : String
 	
 	private def isImage(possibleImg: File) : Boolean = { 
-		return mimetypesFileTypeMap.getContentType( possibleImg).substring(0,5).equalsIgnoreCase("image")
+		mimetypesFileTypeMap.getContentType( possibleImg).substring(0,5).equalsIgnoreCase("image")
 	}
 
 	def init : Boolean = {
@@ -32,9 +32,10 @@ class SlideShowDoer(rootFolderPath: String, timeToShowImage: Long = 2L, shellPro
 			val allFiles : List[File] = f.listFiles.toList
 			curList = scala.util.Random.shuffle(allFiles.filter(file => isImage(file)).map(f => f.getAbsolutePath))
 			iter = curList.iterator
-			return true
+			true
+		} else {
+			false
 		}
-		return false
 	}
 
 	/* Pull out a bunch of files via tags then use this! :D */
@@ -58,7 +59,7 @@ class SlideShowDoer(rootFolderPath: String, timeToShowImage: Long = 2L, shellPro
 			iter = curList.iterator
 			if (!curList.isEmpty) next 
 		}
-		return curFile
+		curFile
 	}
 
 	def showFile(s : String) : Unit = {
