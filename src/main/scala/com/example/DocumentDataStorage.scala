@@ -31,7 +31,7 @@ class DocumentDataStorage(xmlConfFilePath: String, environment: String = "local"
 				resultOfOperation = true
 			}			
 		}
-		return resultOfOperation  
+		resultOfOperation  
 	}
 
 	def getFilesByTags(tag: String) : List[String] = {
@@ -39,7 +39,7 @@ class DocumentDataStorage(xmlConfFilePath: String, environment: String = "local"
 		collection.find(MongoDBObject("tags" -> tag)).foreach { row => 
 			listBuffer += row.as[String]("name")
 		}
-		return listBuffer.toList
+		listBuffer.toList
 	}
 }
 
